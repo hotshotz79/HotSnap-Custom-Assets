@@ -16,12 +16,11 @@ jobs:
     - name: Check for PNG Changes
       run: |
         changed_files=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }})
-        png_files=$(echo "$changed_files" | grep -E '\.png$')
-
-        if [ -z "$png_files" ]; then
-          echo "No PNG files changed. Workflow will be skipped."
-          exit 0
+        
+        if echo "$changed_files" | grep -q -E '^capture\.png$'; then
+          echo "The file capture.png was changed."
+          # Add your additional steps here
         else
-          echo "PNG files changed: $png_files"
-          exit 1
+          echo "The file capture.png was not changed."
+          exit 0
         fi
