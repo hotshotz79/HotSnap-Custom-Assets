@@ -1,0 +1,27 @@
+name: PNG Check Workflow
+
+on:
+  pull_request:
+    paths:
+      - '**/*.png'
+
+jobs:
+  png-check:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+
+    - name: Check for PNG Changes
+      run: |
+        changed_files=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }})
+        png_files=$(echo "$changed_files" | grep -E '\.png$')
+
+        if [ -z "$png_files" ]; then
+          echo "No PNG files changed. Workflow will be skipped."
+          exit 0
+        else
+          echo "PNG files changed: $png_files"
+          exit 1
+        fi
