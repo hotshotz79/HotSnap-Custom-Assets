@@ -4,6 +4,7 @@ on:
   pull_request:
     paths:
       - '**/*.png'
+  workflow_dispatch:
 
 jobs:
   png-check:
